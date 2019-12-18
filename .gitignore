@@ -1,2 +1,4 @@
 .idea
 env
+www/test.py
+www/__pycache__
