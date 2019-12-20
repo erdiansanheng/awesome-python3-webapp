@@ -85,6 +85,30 @@ async def index(*, page='1'):
         'blogs': blogs
     }
 
+## 处理搜索
+@get('/search/{name}')
+async def serch(*, name, page='1'):
+    page_index = get_page_index(page)
+    num = await Blog.findNumber('count(id)', where='FIND_IN_SET("{0}", `name`)'.format(name))
+    p = Page(num, page_index)
+    if num == 0:
+        blogs = []
+    else:
+        blogs = await Blog.findAll(where='FIND_IN_SET("{0}", `name`)'.format(name), orderBy='created_at desc', limit=(p.offset, p.limit))
+    return {
+        '__template__': 'blogs.html',
+        'page': p,
+        'blogs': blogs
+    }
+
+@get('/search/')
+async def serch_none():
+    return {
+        '__template__': 'blogs.html',
+        'page': 1,
+        'blogs': []
+    }
+
 ## 处理日志详情页面URL
 @get('/blog/{id}')
 async def get_blog(id):

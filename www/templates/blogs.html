@@ -4,6 +4,18 @@
 {% block title %}二点三横{% endblock %}
 <!--jinja2 beforehead 块内容替换-->
 {% block beforehead %}
+<script>
+$(function () {
+    var vm = new Vue({
+        el: '#vm',
+        data: {
+            name: 'test'
+        }
+    });
+    $('#vm').show();
+});
+
+</script>
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 {% endblock %}
 
@@ -30,10 +42,10 @@
     <!--右边侧导航栏-->
     <div class="uk-width-1-4 uk-visible@m">
             <h4>站内搜索</h4>
-            <FORM method=GET action="https://www.google.com/search">
+            <FORM id="vm">
                 <div class="uk-inline">
-                    <a class="uk-form-icon uk-form-icon-flip" href="#" uk-icon="search"></a>
-                    <INPUT class="uk-input" TYPE=text name=q placeholder="站内搜索" size=31 maxlength=255 value="">
+                    <a class="uk-form-icon uk-form-icon-flip" href="search/{{ name }}" uk-icon="search"></a>
+                    <INPUT v-model="name" class="uk-input" TYPE=text name=q placeholder="站内搜索" size=31 maxlength=255 value="">
                 </div>
                 <!--<font size=-1>-->
                     <!--<INPUT TYPE=hidden name=domains value="aodabo.tech"><br>-->
