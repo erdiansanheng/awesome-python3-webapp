@@ -33,7 +33,7 @@
             <FORM>
                 <div class="uk-inline">
                     <a id="search" class="uk-form-icon uk-form-icon-flip" href="" uk-icon="search"></a>
-                    <INPUT id="input" class="uk-input" TYPE=text name=q placeholder="站内搜索" size=31 maxlength=255 value="">
+                    <input id="input" class="uk-input" TYPE=text onkeypress="search(event)" placeholder="站内搜索" size=31 maxlength=255 value="">
                 </div>
                 <!--<font size=-1>-->
                     <!--<INPUT TYPE=hidden name=domains value="aodabo.tech"><br>-->
@@ -72,11 +72,23 @@
     </div>
     <script>
         $(document).ready(function () {
+            console.log(event.keyCode);
+            console.log(event.which);
             $("#search").click(function () {
                 var value = $("#input").val();
-                $("#search").attr("href", "search/" + value);
+                var host = "http://" + window.location.host + "/"
+                $("#search").attr("href", host + "search/" + value);
             });
+
         });
+        function search(event) {
+            var value = $("#input").val();
+            keyCode = event.keyCode || event.which;
+            if(keyCode == 13 || keyCode == "13") {
+                var host = "http://" + window.location.host + "/"
+                window.location.href = host + "search/" + value;
+            }
+        }
     </script>>
 
 {% endblock %}
