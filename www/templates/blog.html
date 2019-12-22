@@ -5,29 +5,31 @@
 <!--jinja2 beforehead 块内容替换-->
 {% block beforehead %}
 <!--script中构建vue,向后端API提交日志评论相关数据-->
-<script>
+<!--<script>-->
 
-var comment_url = '/api/blogs/{{ blog.id }}/comments';
+<!--var comment_url = '/api/blogs/{{ blog.id }}/comments';-->
 
-$(function () {
-    var $form = $('#form-comment');
-    $form.submit(function (e) {
-        e.preventDefault();
-        $form.showFormError('');
-        var content = $form.find('textarea').val().trim();
-        if (content==='') {
-            return $form.showFormError('请输入评论内容！');
-        }
-        $form.postJSON(comment_url, { content: content }, function (err, result) {
-            if (err) {
-                return $form.showFormError(err);
-            }
-            refresh();
-        });
-    });
-});
-</script>
+<!--$(function () {-->
+<!--    var $form = $('#form-comment');-->
+<!--    $form.submit(function (e) {-->
+<!--        e.preventDefault();-->
+<!--        $form.showFormError('');-->
+<!--        var content = $form.find('textarea').val().trim();-->
+<!--        if (content==='') {-->
+<!--            return $form.showFormError('请输入评论内容！');-->
+<!--        }-->
+<!--        $form.postJSON(comment_url, { content: content }, function (err, result) {-->
+<!--            if (err) {-->
+<!--                return $form.showFormError(err);-->
+<!--            }-->
+<!--            refresh();-->
+<!--        });-->
+<!--    });-->
+<!--});-->
+<!--</script>-->
 <!--<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>-->
+<link rel="stylesheet" href="/static/css/jquery.fancybox.min.css" />
+<script src="/static/js/jquery.fancybox.min.js"></script>
 <script src='//unpkg.com/valine@1.3.7/dist/Valine.min.js'></script>
 
 {% endblock %}
@@ -58,5 +60,7 @@ $(function () {
         </script>
     </div>
     </div>
+
+    <script>$("a.img_group").fancybox();</script>
 
 {% endblock %}
