@@ -34,32 +34,7 @@ $(function () {
 
 <!--jinja2 content 块内容替换-->
 {% block content %}
-    <div class="uk-grid  uk-visible@m">
-    <div class="uk-width-3-4">
-        <!--日志内容详情-->
-        <article class="uk-article">
-            <h2>{{ blog.name }}</h2>
-            <p class="uk-article-meta">发表于{{ blog.created_at|datetime }}</p>
-            <p>{{ blog.html_content|safe }}</p>
-        </article>
-
-        <hr>
-        <div id="vcomments"></div>
-        <script>
-            new Valine({
-                el: '#vcomments',
-                appId: '2d34RBtycfCJMmHdb7oYxvHB-gzGzoHsz',
-                appKey: '1YArxfgAjtHtqAaXbidkcyHo',
-                meta:['nick','mail'],
-                lang:'zh-cn',
-                highlight: true,
-                placeholder: '请输入...'
-            })
-        </script>
-    </div>
-    </div>
-
-    <div class="uk-grid  uk-hidden@m">
+    <div class="uk-grid">
     <div class="uk-width-3-4">
         <!--日志内容详情-->
         <article class="uk-article">
