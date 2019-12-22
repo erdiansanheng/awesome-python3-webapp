@@ -61,6 +61,12 @@
     </div>
     </div>
 
-    <script>$("a.img_group").fancybox();</script>
+    <script>
+        $("img").wrap('<a class="img_group" href=""> /');
+        $("a.img_group").each(function () {
+            $(this).attr('href', $(this).children("img").attr('src'));
+        });
+        $("a.img_group").fancybox();
+    </script>
 
 {% endblock %}

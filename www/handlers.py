@@ -89,12 +89,12 @@ async def index(*, page='1'):
 @get('/search/{name}')
 async def serch(*, name, page='1'):
     page_index = get_page_index(page)
-    num = await Blog.findNumber('count(id)', where='FIND_IN_SET("{0}", `name`)'.format(name))
+    num = await Blog.findNumber('count(id)', where='INSTR(`name`, "{0}")>0'.format(name))
     p = Page(num, page_index)
     if num == 0:
         blogs = []
     else:
-        blogs = await Blog.findAll(where='FIND_IN_SET("{0}", `name`)'.format(name), orderBy='created_at desc', limit=(p.offset, p.limit))
+        blogs = await Blog.findAll(where='INSTR(`name`, "{0}")>0'.format(name), orderBy='created_at desc', limit=(p.offset, p.limit))
     return {
         '__template__': 'blogs.html',
         'page': p,
