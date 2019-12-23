@@ -4,7 +4,7 @@
 import re, time, json, logging, hashlib, base64, asyncio
 
 ## markdown 是处理日志文本的一种格式语法，具体语法使用请百度
-import markdown
+import mistune
 from aiohttp import web
 from coroweb import get, post
 
@@ -115,8 +115,8 @@ async def get_blog(id):
     blog = await Blog.find(id)
     comments = await Comment.findAll('blog_id=?', [id], orderBy='created_at desc')
     for c in comments:
-        c.html_content = markdown.markdown(c.content)
-    blog.html_content = markdown.markdown(blog.content)
+        c.html_content = mistune.markdown(c.content)
+    blog.html_content = mistune.markdown(blog.content)
     return {
         '__template__': 'blog.html',
         'blog': blog,
