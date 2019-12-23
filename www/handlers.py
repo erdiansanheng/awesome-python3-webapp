@@ -139,23 +139,50 @@ def signin():
 
 ## 处理教程页面URL
 @get('/tutorial')
-def tutorial():
+async def tutorial(*, page='1'):
+    page_index = get_page_index(page)
+    num = await Blog.findNumber('count(id)', where='`classification`="教程"')
+    p = Page(num, page_index)
+    if num == 0:
+        blogs = []
+    else:
+        blogs = await Blog.findAll(orderBy='created_at desc', where='`classification`="教程"', limit=(p.offset, p.limit))
     return {
-       '__template__': 'tutorial.html'
+        '__template__': 'tutorial.html',
+        'page': p,
+        'blogs': blogs
     }
 
 ## 处理景观页面URL
-@get('/landscape')
-def landscape():
+@get('/life')
+async def landscape(*, page='1'):
+    page_index = get_page_index(page)
+    num = await Blog.findNumber('count(id)', where='`classification`="生活"')
+    p = Page(num, page_index)
+    if num == 0:
+        blogs = []
+    else:
+        blogs = await Blog.findAll(orderBy='created_at desc', where='`classification`="生活"', limit=(p.offset, p.limit))
     return {
-       '__template__': 'landscape.html'
+        '__template__': 'life.html',
+        'page': p,
+        'blogs': blogs
     }
 
 ## 处理编程页面URL
 @get('/coding')
-def coding():
+async def coding(*, page='1'):
+    page_index = get_page_index(page)
+    num = await Blog.findNumber('count(id)', where='`classification`="编程"')
+    p = Page(num, page_index)
+    if num == 0:
+        blogs = []
+    else:
+        blogs = await Blog.findAll(orderBy='created_at desc', where='`classification`="编程"', limit=(p.offset, p.limit))
     return {
-       '__template__': 'coding.html'
+        '__template__': 'coding.html',
+        'page': p,
+        'blogs': blogs
     }
 
 ## 用户登录验证API
