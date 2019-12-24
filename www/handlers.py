@@ -86,8 +86,9 @@ async def index(*, page='1'):
     }
 
 ## 处理搜索
-@get('/search/{name}')
-async def serch(*, name, page='1'):
+@get('/query/')
+async def search_two(*, page='1', **kw):
+    name = kw['q']
     page_index = get_page_index(page)
     num = await Blog.findNumber('count(id)', where='INSTR(`name`, "{0}")>0'.format(name))
     p = Page(num, page_index)
@@ -102,7 +103,7 @@ async def serch(*, name, page='1'):
     }
 
 @get('/search/')
-async def serch_none():
+async def search_none():
     return {
         '__template__': 'blogs.html',
         'page': 1,
