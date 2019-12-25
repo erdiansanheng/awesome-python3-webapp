@@ -86,16 +86,16 @@ async def index(*, page='1'):
     }
 
 ## 处理搜索
-@get('/query/')
+@get('/query')
 async def search_two(*, page='1', **kw):
     name = kw['q']
     page_index = get_page_index(page)
-    num = await Blog.findNumber('count(id)', where='INSTR(`name`, "{0}")>0'.format(name))
+    num = await Blog.findNumber('count(id)', where='INSTR(`name`, "{0}")>0 OR INSTR(`summary`, "{1}")>0'.format(name, name))
     p = Page(num, page_index)
     if num == 0:
         blogs = []
     else:
-        blogs = await Blog.findAll(where='INSTR(`name`, "{0}")>0'.format(name), orderBy='created_at desc', limit=(p.offset, p.limit))
+        blogs = await Blog.findAll(where='INSTR(`name`, "{0}")>0 OR INSTR(`summary`, "{1}")>0'.format(name, name), orderBy='created_at desc', limit=(p.offset, p.limit))
     return {
         '__template__': 'blogs.html',
         'page': p,
