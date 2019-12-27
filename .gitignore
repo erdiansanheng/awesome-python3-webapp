@@ -4,3 +4,4 @@ www/test.py
 www/__pycache__
 miyue
 dist/dist-awesome.tar.gz
+fabfile.py

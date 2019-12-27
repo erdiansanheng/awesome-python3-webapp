@@ -226,6 +226,13 @@ def signout(request):
 def manage():
     return 'redirect:/manage/comments'
 
+## 修改密码页面
+@get('/changepw/')
+def changepw():
+    return {
+        '__template__': 'changepw.html',
+    }
+
 ## 评论管理页面
 @get('/manage/comments')
 def manage_comments(*, page='1'):
@@ -344,6 +351,34 @@ _RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
 #     r.content_type = 'application/json'
 #     r.body = json.dumps(user, ensure_ascii=False).encode('utf-8')
 #     return r
+
+## 修改密码API
+@post('/api/changepw')
+async def api_change_password(*, email, old_passwd, new_passwd):
+    if not email or not _RE_EMAIL.match(email):
+        raise APIValueError('email')
+    if not old_passwd or not _RE_SHA1.match(old_passwd):
+        raise APIValueError('old passwd')
+    if not new_passwd or not _RE_SHA1.match(new_passwd):
+        raise APIValueError('new passwd')
+    users = await User.findAll('email=?', [email])
+    if len(users) == 0:
+        raise APIError('change password:failed', 'email', 'Email is not found.')
+    user = users[0]
+    uid = user.getValue('id')
+    sha1_old_passwd = '%s:%s' % (uid, old_passwd)
+    if hashlib.sha1(sha1_old_passwd.encode('utf-8')).hexdigest() != user.getValue('passwd'):
+        raise APIError('change password:failed', 'passwd', 'Old password error.')
+    sha1_new_passwd = '%s:%s' % (uid, new_passwd)
+    user.passwd = hashlib.sha1(sha1_new_passwd.encode('utf-8')).hexdigest()
+    await user.update()
+    # make session cookie:
+    r = web.Response()
+    r.set_cookie(COOKIE_NAME, user2cookie(user, 86400), max_age=86400, httponly=True)
+    user.passwd = '******'
+    r.content_type = 'application/json'
+    r.body = json.dumps(user, ensure_ascii=False).encode('utf-8')
+    return r
 
 ## 获取日志列表API
 @get('/api/blogs')
