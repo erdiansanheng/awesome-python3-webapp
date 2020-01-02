@@ -117,7 +117,7 @@ async def get_blog(id):
     comments = await Comment.findAll('blog_id=?', [id], orderBy='created_at desc')
     for c in comments:
         c.html_content = mistune.markdown(c.content)
-    blog.html_content = mistune.markdown(blog.content)
+    blog.html_content = mistune.markdown(blog.content, escape=False)
     return {
         '__template__': 'blog.html',
         'blog': blog,
