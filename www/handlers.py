@@ -102,14 +102,6 @@ async def search_two(*, page='1', **kw):
         'blogs': blogs
     }
 
-@get('/search/')
-async def search_none():
-    return {
-        '__template__': 'blogs.html',
-        'page': 1,
-        'blogs': []
-    }
-
 ## 处理日志详情页面URL
 @get('/blog/{id}')
 async def get_blog(id):
