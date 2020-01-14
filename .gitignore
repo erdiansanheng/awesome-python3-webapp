@@ -4,5 +4,6 @@ www/test.py
 www/__pycache__
 www/config_override.py
 miyue
+dist
 dist/dist-awesome.tar.gz
 fabfile.py
