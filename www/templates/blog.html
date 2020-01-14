@@ -70,7 +70,9 @@
 
     <script>
         $("img").wrap('<a class="img_group" href=""> /');
-        $("img").attr("data-src", $("img").attr("src"));
+        $("img").each(function () {
+            $(this).attr("data-src", $(this).attr("src"));
+        });
         $("img").attr("src", "/static/img/loading.gif");
         $("a.img_group").each(function () {
             $(this).attr('href', $(this).children("img").attr('data-src'));
@@ -93,7 +95,7 @@
             }, 300)
         })
 
-            function lazyRender () {
+        function lazyRender () {
             $('img').each(function () {
                 if (checkShow($(this)) && !isLoaded($(this)) ){
                     loadImg($(this));
